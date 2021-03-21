@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "521732879242",
+    "project_id": "industrial-iot-70f99",
+    "storage_bucket": "industrial-iot-70f99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521732879242:android:ef57dc1d8bbef2c7950e73",
+        "android_client_info": {
+          "package_name": "com.example.industrial_iot_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521732879242-u7fpg9397gbvjiibvmogiughlr01j2i1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfI-CWwvyICjF7X6z8zJi5GsU3mWeiawc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521732879242-u7fpg9397gbvjiibvmogiughlr01j2i1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
