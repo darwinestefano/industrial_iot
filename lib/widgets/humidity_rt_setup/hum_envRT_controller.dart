@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature_chart/temp_env_chart.dart';
+import 'package:industrial_iot_app/widgets/humidity_rt_setup/humidity_chart/hum_env_chart.dart';
 
-class TemperatureController extends StatefulWidget {
+class HumidityController extends StatefulWidget {
   @override
-  _EnvironmentDashboardState createState() => _EnvironmentDashboardState();
+  _HumidityControllerState createState() => _HumidityControllerState();
 }
 
-class _EnvironmentDashboardState extends State<TemperatureController>
+class _HumidityControllerState extends State<HumidityController>
     with TickerProviderStateMixin {
   bool isLoading = false;
 
-  CollectionReference temperature =
-      FirebaseFirestore.instance.collection('temperature');
+  CollectionReference humidity =
+      FirebaseFirestore.instance.collection('humidity');
 
   AnimationController progressController;
-  Animation<double> tempAnimation;
+  Animation<double> humAnimation;
 
   @override
   void initState() {
@@ -26,15 +26,15 @@ class _EnvironmentDashboardState extends State<TemperatureController>
 
   void dataStream() async {
     await for (var snapshot in FirebaseFirestore.instance
-        .collection('temperature')
+        .collection('humidity')
         .orderBy('datestamp')
         .orderBy('timestamp')
         .snapshots()) {
       for (var data in snapshot.docs) {
-        int temp = data.data()['temperature'];
+        int hum = data.data()['humidity'];
         // print(temp);
         isLoading = true;
-        double t = temp.toDouble();
+        double t = hum.toDouble();
         _dashboardInit(t);
       }
     }
@@ -48,7 +48,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
       ),
     ); //5s
 
-    tempAnimation =
+    humAnimation =
         Tween<double>(begin: temp, end: temp).animate(progressController)
           ..addListener(() {
             if (mounted) {
@@ -68,7 +68,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
         Padding(
           padding: EdgeInsets.only(left: 15.00),
           child: Text(
-            'Current Temperature',
+            'Current Humidity',
             style: TextStyle(
               color: Colors.grey[800],
               fontSize: 15.0,
@@ -94,7 +94,8 @@ class _EnvironmentDashboardState extends State<TemperatureController>
           ),
           child: isLoading
               ? CustomPaint(
-                  foregroundPainter: CircleProgress(tempAnimation.value, true),
+                  foregroundPainter:
+                      HumCircleProgress(humAnimation.value, true),
                   child: Container(
                     width: 200,
                     height: 200,
@@ -102,14 +103,14 @@ class _EnvironmentDashboardState extends State<TemperatureController>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Temperature'),
+                          Text('Humidity'),
                           Text(
-                            '${tempAnimation.value.toInt()}',
+                            '${humAnimation.value.toInt()}',
                             style: TextStyle(
                                 fontSize: 50, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '°C',
+                            '%',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -119,7 +120,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
                   ),
                 )
               : Text(
-                  'Loading data...',
+                  'Please wait unitl the data has been processed...',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

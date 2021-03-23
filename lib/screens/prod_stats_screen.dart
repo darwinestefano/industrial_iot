@@ -6,8 +6,6 @@ import 'package:industrial_iot_app/config/styles.dart';
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
 import 'package:industrial_iot_app/widgets/env_stats_grid.dart';
 
-import 'package:industrial_iot_app/widgets/temperature_chart/envRT_chart.dart';
-
 class ProdStatsScreen extends StatefulWidget {
   @override
   _ProdStatsScreenState createState() => _ProdStatsScreenState();
@@ -29,12 +27,6 @@ class _ProdStatsScreenState extends State<ProdStatsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
               child: EnvStatsGrid(),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 20.0),
-            sliver: SliverToBoxAdapter(
-              child: TemperatureEnvRTChart(),
             ),
           ),
         ],

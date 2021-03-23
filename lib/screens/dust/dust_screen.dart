@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_logs_grid.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_controller.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_stats_grid.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature_chart/temp_envRT_chart.dart';
+import 'package:industrial_iot_app/widgets/dust_chart/dust_envRT_chart.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_controller.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_logs_grid.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_stats_grid.dart';
 
-class TemperatureDashboard extends StatefulWidget {
+class DustDashboard extends StatefulWidget {
   @override
-  _TemperatureDashboardState createState() => _TemperatureDashboardState();
+  _DustDashboardState createState() => _DustDashboardState();
 }
 
-class _TemperatureDashboardState extends State<TemperatureDashboard> {
+class _DustDashboardState extends State<DustDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,25 +24,25 @@ class _TemperatureDashboardState extends State<TemperatureDashboard> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TemperatureController(),
+              child: DustController(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TempEnvRTStatsGrid(),
+              child: DustEnvRTStatsGrid(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TempEnvRTLogsGrid(),
+              child: DustEnvRTLogsGrid(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 20.0),
             sliver: SliverToBoxAdapter(
-              child: TemperatureRTChart(),
+              child: DustRTChart(),
             ),
           ),
         ],
@@ -55,7 +55,7 @@ class _TemperatureDashboardState extends State<TemperatureDashboard> {
       padding: const EdgeInsets.all(20.0),
       sliver: SliverToBoxAdapter(
         child: Text(
-          'TEMPERATURE DASHBOARD',
+          'DUST DASHBOARD',
           style: TextStyle(
             color: Colors.grey[800],
             fontSize: 20.0,

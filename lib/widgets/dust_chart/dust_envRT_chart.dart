@@ -1,40 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust.dart';
+
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature.dart';
 
-class TemperatureRTChart extends StatefulWidget {
+class DustRTChart extends StatefulWidget {
   @override
-  _TemperatureRTChartState createState() => _TemperatureRTChartState();
+  _DustRTChartState createState() => _DustRTChartState();
 }
 
-class _TemperatureRTChartState extends State<TemperatureRTChart> {
-  List<LineSeries<Temperature, String>> _seriesBarData;
-  List<Temperature> mydata;
+class _DustRTChartState extends State<DustRTChart> {
+  List<LineSeries<Dust, String>> _seriesBarData;
+  List<Dust> mydata;
 
   _generateData(mydata) {
     //ignore: deprecated_member_use
-    _seriesBarData = List<LineSeries<Temperature, String>>();
+    _seriesBarData = List<LineSeries<Dust, String>>();
     _seriesBarData.add(
       LineSeries(
         dataSource: mydata,
-        xValueMapper: (Temperature temp, _) {
-          return temp.timestamp.toString();
+        xValueMapper: (Dust dust, _) {
+          return dust.timestamp.toString();
         },
-        yValueMapper: (Temperature temp, _) => temp.temperature,
+        yValueMapper: (Dust dust, _) => dust.dust,
         dataLabelSettings: DataLabelSettings(isVisible: true),
+        enableTooltip: true,
+        sortingOrder: SortingOrder.ascending,
       ),
     );
-
-    //);
-    // return <ChartSeries<Temperature, String>>[
-    //   StackedArea100Series<Temperature, String>(
-    //     animationDuration: 2500,
-    //     dataSource: mydata,
-    //     xValueMapper: (Temperature temp, _) => temp.timestamp.toString(),
-    //     yValueMapper: (Temperature temp, _) => temp.temperature,
-    //   ),
-    // ];
   }
 
   @override
@@ -45,7 +38,7 @@ class _TemperatureRTChartState extends State<TemperatureRTChart> {
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('dust')
           .orderBy('timestamp', descending: true)
           .limit(5)
           .snapshots(),
@@ -53,18 +46,17 @@ class _TemperatureRTChartState extends State<TemperatureRTChart> {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
         } else {
-          List<Temperature> temperatures = snapshot.data.docs
-              .map((documentSnapshot) =>
-                  Temperature.fromMap(documentSnapshot.data()))
+          List<Dust> dust = snapshot.data.docs
+              .map((documentSnapshot) => Dust.fromMap(documentSnapshot.data()))
               .toList();
-          return _buildChart(context, temperatures);
+          return _buildChart(context, dust);
         }
       },
     );
   }
 
-  Widget _buildChart(BuildContext context, List<Temperature> temperature) {
-    mydata = temperature;
+  Widget _buildChart(BuildContext context, List<Dust> dust) {
+    mydata = dust;
     _generateData(mydata);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,24 +101,3 @@ class _TemperatureRTChartState extends State<TemperatureRTChart> {
     );
   }
 }
-
-
-
-
-
-// Container(
-
-//           ),
-//           child: Column(
-//             children: <Widget>[
-//               Container(
-//                 padding: const EdgeInsets.all(20.0),
-//                 alignment: Alignment.centerLeft,
-//                 child: Text(
-//                   'Daily Recordings',
-//                   style: const TextStyle(
-//                     fontSize: 22.0,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//               ),

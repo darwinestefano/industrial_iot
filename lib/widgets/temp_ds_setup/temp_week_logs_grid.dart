@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:industrial_iot_app/widgets/alert_dialog.dart';
+
 import 'package:industrial_iot_app/widgets/streambuilder_all.dart';
 import 'package:industrial_iot_app/widgets/streambuilder_higher.dart';
 import 'package:industrial_iot_app/widgets/streambuilder_lower.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature.dart';
 
 import 'package:intl/intl.dart';
 
@@ -119,19 +118,34 @@ class _TempWeekGridLogsState extends State<TempWeekGridLogs> {
           .collection('temperature')
           .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
-      return StreamBuilederLower(log);
+      return StreamBuilderLower(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     } else if (state == 'Higher Trashold') {
       log = FirebaseFirestore.instance
           .collection('temperature')
           .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
-      return StreamBuilederHigher(log);
+      return StreamBuilderHigher(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     } else {
       log = FirebaseFirestore.instance
           .collection('temperature')
           .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
-      return StreamBuilederAll(log);
+      return StreamBuilderAll(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     }
   }
 }

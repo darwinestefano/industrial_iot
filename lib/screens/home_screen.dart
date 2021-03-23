@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:industrial_iot_app/config/palette.dart';
+import 'package:industrial_iot_app/screens/dust/dust_screen.dart';
+import 'package:industrial_iot_app/screens/humidity/humidity_screen.dart';
 import 'package:industrial_iot_app/screens/temperature/temperature_screen.dart';
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
 
@@ -127,9 +129,31 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             _buildEnvironmentalSensors(
-                "assets/images/humidity.png", "HUMIDITY", "Device ", () {}),
+              "assets/images/humidity.png",
+              "HUMIDITY",
+              "Device ",
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HumidityDashboard(),
+                  ),
+                );
+              },
+            ),
             _buildEnvironmentalSensors(
-                "assets/images/sandstorm.png", "DUST", " Device", () {}),
+              "assets/images/sandstorm.png",
+              "DUST",
+              " Device",
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DustDashboard(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

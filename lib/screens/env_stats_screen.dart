@@ -5,6 +5,12 @@ import 'package:industrial_iot_app/config/palette.dart';
 import 'package:industrial_iot_app/config/styles.dart';
 
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_month_logs_grid.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_month_stats_grid.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_today_logs_grid.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_today_stats_grid.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_week_logs_grid.dart';
+import 'package:industrial_iot_app/widgets/hum_ds_setup/hum_week_stats_grid.dart';
 import 'package:industrial_iot_app/widgets/temp_ds_setup/temp_month_logs_grid.dart';
 import 'package:industrial_iot_app/widgets/temp_ds_setup/temp_month_stats_grid.dart';
 import 'package:industrial_iot_app/widgets/temp_ds_setup/temp_today_logs_grid.dart';
@@ -170,30 +176,34 @@ class _TempEnvStatsScreenState extends State<TempEnvStatsScreen> {
 
   CustomScrollView _selectView(int index, int period) {
     if (index == 0) {
-      if (period == 0)
-        return _buildTempTodayView();
-      else if (period == 1)
-        return _buildTempWeekView();
-      else
-        return _buildTempMonthView();
+      if (period == 0) {
+        print(period);
+        return _buildViews(TemperaureTodayStats(), TempTodayLogs());
+      } else if (period == 1) {
+        print(period);
+        return _buildViews(TemperaureweekStats(), TempWeekGridLogs());
+      } else {
+        print(period);
+        return _buildViews(TemperaureMonthStats(), TempMonthGridLogs());
+      }
     } else if (index == 1) {
       if (period == 0)
-        return _buildHumTodayView();
+        return _buildViews(HumidityTodayStats(), HumTodayLogs());
       else if (period == 1)
-        return _buildHumWeekView();
+        return _buildViews(HumidityweekStats(), HumWeekGridLogs());
       else
-        return _buildHumMonthView();
+        return _buildViews(HumidityMonthStats(), HumMonthGridLogs());
     } else {
       if (period == 0)
-        return _buildTempTodayView();
+        return _buildViews(TemperaureTodayStats(), HumMonthGridLogs());
       else if (period == 1)
-        return _buildTempTodayView();
+        return _buildViews(TemperaureTodayStats(), HumMonthGridLogs());
       else
-        return _buildTempTodayView();
+        return _buildViews(TemperaureTodayStats(), HumMonthGridLogs());
     }
   }
 
-  CustomScrollView _buildTempTodayView() {
+  CustomScrollView _buildViews(dynamic stats, dynamic logs) {
     return CustomScrollView(
       physics: ClampingScrollPhysics(),
       slivers: <Widget>[
@@ -203,128 +213,13 @@ class _TempEnvStatsScreenState extends State<TempEnvStatsScreen> {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           sliver: SliverToBoxAdapter(
-            child: TemperaureTodayStats(),
+            child: stats,
           ),
         ),
         SliverPadding(
           padding: const EdgeInsets.only(top: 20.0),
           sliver: SliverToBoxAdapter(
-            child: TempTodayLowerLogs(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  CustomScrollView _buildTempWeekView() {
-    return CustomScrollView(
-      physics: ClampingScrollPhysics(),
-      slivers: <Widget>[
-        _buildHeader(),
-        _buildRegionTabBar(),
-        _buildStatsTabBar(),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          sliver: SliverToBoxAdapter(
-            child: TemperaureweekStats(),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 20.0),
-          sliver: SliverToBoxAdapter(
-            child: TempWeekGridLogs(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  CustomScrollView _buildTempMonthView() {
-    return CustomScrollView(
-      physics: ClampingScrollPhysics(),
-      slivers: <Widget>[
-        _buildHeader(),
-        _buildRegionTabBar(),
-        _buildStatsTabBar(),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          sliver: SliverToBoxAdapter(
-            child: TemperaureMonthStats(),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 20.0),
-          sliver: SliverToBoxAdapter(
-            child: TempMonthGridLogs(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  CustomScrollView _buildHumTodayView() {
-    return CustomScrollView(
-      physics: ClampingScrollPhysics(),
-      slivers: <Widget>[
-        _buildHeader(),
-        _buildRegionTabBar(),
-        _buildStatsTabBar(),
-        // SliverPadding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        //   sliver: SliverToBoxAdapter(
-        //     child: TemperaureTodayStats(),
-        //   ),
-        // ),
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 20.0),
-          sliver: SliverToBoxAdapter(
-            child: TempTodayLowerLogs(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  CustomScrollView _buildHumWeekView() {
-    return CustomScrollView(
-      physics: ClampingScrollPhysics(),
-      slivers: <Widget>[
-        _buildHeader(),
-        _buildRegionTabBar(),
-        _buildStatsTabBar(),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          sliver: SliverToBoxAdapter(
-            child: TemperaureTodayStats(),
-          ),
-        ),
-        // SliverPadding(
-        //   padding: const EdgeInsets.only(top: 20.0),
-        //   sliver: SliverToBoxAdapter(
-        //     child: TempTodayLowerLogs(),
-        //   ),
-        // ),
-      ],
-    );
-  }
-
-  CustomScrollView _buildHumMonthView() {
-    return CustomScrollView(
-      physics: ClampingScrollPhysics(),
-      slivers: <Widget>[
-        _buildHeader(),
-        _buildRegionTabBar(),
-        _buildStatsTabBar(),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          sliver: SliverToBoxAdapter(
-            child: TemperaureTodayStats(),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 20.0),
-          sliver: SliverToBoxAdapter(
-            child: TempTodayLowerLogs(),
+            child: logs,
           ),
         ),
       ],

@@ -7,12 +7,12 @@ import 'package:industrial_iot_app/widgets/streambuilder_lower.dart';
 
 import 'package:intl/intl.dart';
 
-class TempMonthGridLogs extends StatefulWidget {
+class HumMonthGridLogs extends StatefulWidget {
   @override
-  _TempMonthGridLogsState createState() => _TempMonthGridLogsState();
+  _HumMonthGridLogsState createState() => _HumMonthGridLogsState();
 }
 
-class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
+class _HumMonthGridLogsState extends State<HumMonthGridLogs> {
   String valueChoose;
   String status = 'All';
   List listItem = ["All", "Lower Trashold", "Higher Trashold"];
@@ -111,38 +111,38 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
     if (state == 'Lower Trashold') {
       print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderLower(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else if (state == 'Higher Trashold') {
       print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderHigher(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else {
       print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderAll(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     }
   }

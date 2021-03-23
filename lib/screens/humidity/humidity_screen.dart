@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_logs_grid.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_controller.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temp_envRT_stats_grid.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature_chart/temp_envRT_chart.dart';
+import 'package:industrial_iot_app/widgets/humidity_rt_setup/hum_envRT_controller.dart';
+import 'package:industrial_iot_app/widgets/humidity_rt_setup/hum_envRT_logs_grid.dart';
+import 'package:industrial_iot_app/widgets/humidity_rt_setup/hum_envRT_stats_grid.dart';
+import 'package:industrial_iot_app/widgets/humidity_rt_setup/humidity_chart/hum_envRT_chart.dart';
 
-class TemperatureDashboard extends StatefulWidget {
+class HumidityDashboard extends StatefulWidget {
   @override
-  _TemperatureDashboardState createState() => _TemperatureDashboardState();
+  _HumidityDashboardState createState() => _HumidityDashboardState();
 }
 
-class _TemperatureDashboardState extends State<TemperatureDashboard> {
+class _HumidityDashboardState extends State<HumidityDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,25 +24,25 @@ class _TemperatureDashboardState extends State<TemperatureDashboard> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TemperatureController(),
+              child: HumidityController(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TempEnvRTStatsGrid(),
+              child: HumEnvRTStatsGrid(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             sliver: SliverToBoxAdapter(
-              child: TempEnvRTLogsGrid(),
+              child: HumEnvRTLogsGrid(),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 20.0),
             sliver: SliverToBoxAdapter(
-              child: TemperatureRTChart(),
+              child: HumidityRTChart(),
             ),
           ),
         ],
@@ -55,7 +55,7 @@ class _TemperatureDashboardState extends State<TemperatureDashboard> {
       padding: const EdgeInsets.all(20.0),
       sliver: SliverToBoxAdapter(
         child: Text(
-          'TEMPERATURE DASHBOARD',
+          'HUMIDITY DASHBOARD',
           style: TextStyle(
             color: Colors.grey[800],
             fontSize: 20.0,
