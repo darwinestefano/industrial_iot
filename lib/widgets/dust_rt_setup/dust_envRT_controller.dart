@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:industrial_iot_app/widgets/temp_rt_setup/temperature_chart/temp_env_chart.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_chart/dust_env_chart.dart';
 
-class TemperatureController extends StatefulWidget {
+class DustController extends StatefulWidget {
   @override
-  _EnvironmentDashboardState createState() => _EnvironmentDashboardState();
+  _DustControllerState createState() => _DustControllerState();
 }
 
-class _EnvironmentDashboardState extends State<TemperatureController>
+class _DustControllerState extends State<DustController>
     with TickerProviderStateMixin {
   bool isLoading = false;
 
-  CollectionReference temperature =
-      FirebaseFirestore.instance.collection('temperature');
+  CollectionReference humidity = FirebaseFirestore.instance.collection('dust');
 
   AnimationController progressController;
-  Animation<double> tempAnimation;
+  Animation<double> dustAnimation;
 
   @override
   void initState() {
@@ -26,15 +25,15 @@ class _EnvironmentDashboardState extends State<TemperatureController>
 
   void dataStream() async {
     await for (var snapshot in FirebaseFirestore.instance
-        .collection('temperature')
+        .collection('dust')
         .orderBy('datestamp')
         .orderBy('timestamp')
         .snapshots()) {
       for (var data in snapshot.docs) {
-        int temp = data.data()['temperature'];
+        int hum = data.data()['dust'];
         // print(temp);
         isLoading = true;
-        double t = temp.toDouble();
+        double t = hum.toDouble();
         _dashboardInit(t);
       }
     }
@@ -48,7 +47,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
       ),
     ); //5s
 
-    tempAnimation =
+    dustAnimation =
         Tween<double>(begin: temp, end: temp).animate(progressController)
           ..addListener(() {
             if (mounted) {
@@ -68,7 +67,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
         Padding(
           padding: EdgeInsets.only(left: 15.00),
           child: Text(
-            'Current Temperature',
+            'Current Dust',
             style: TextStyle(
               color: Colors.grey[800],
               fontSize: 15.0,
@@ -94,7 +93,8 @@ class _EnvironmentDashboardState extends State<TemperatureController>
           ),
           child: isLoading
               ? CustomPaint(
-                  foregroundPainter: CircleProgress(tempAnimation.value, true),
+                  foregroundPainter:
+                      DustCircleProgress(dustAnimation.value, true),
                   child: Container(
                     width: 200,
                     height: 200,
@@ -102,14 +102,14 @@ class _EnvironmentDashboardState extends State<TemperatureController>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Temperature'),
+                          Text('Dust'),
                           Text(
-                            '${tempAnimation.value.toInt()}',
+                            '${dustAnimation.value.toInt()}',
                             style: TextStyle(
                                 fontSize: 50, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '°C',
+                            '%',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -119,7 +119,7 @@ class _EnvironmentDashboardState extends State<TemperatureController>
                   ),
                 )
               : Text(
-                  'Loading data...',
+                  'Please wait unitl the data has been processed...',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

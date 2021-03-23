@@ -7,12 +7,12 @@ import 'package:industrial_iot_app/widgets/streambuilder_lower.dart';
 
 import 'package:intl/intl.dart';
 
-class TempTodayLowerLogs extends StatefulWidget {
+class TempTodayLogs extends StatefulWidget {
   @override
-  _TempTodayLowerLogsState createState() => _TempTodayLowerLogsState();
+  _TempTodayLogsState createState() => _TempTodayLogsState();
 }
 
-class _TempTodayLowerLogsState extends State<TempTodayLowerLogs> {
+class _TempTodayLogsState extends State<TempTodayLogs> {
   String valueChoose;
   String status = 'All';
   List listItem = ["All", "Lower Trashold", "Higher Trashold"];
@@ -28,7 +28,7 @@ class _TempTodayLowerLogsState extends State<TempTodayLowerLogs> {
         Padding(
           padding: EdgeInsets.only(left: 15.00),
           child: Text(
-            'Lower Treshold Logs',
+            'Today Logs',
             style: TextStyle(
               color: Colors.grey[800],
               fontSize: 15.0,
@@ -97,7 +97,7 @@ class _TempTodayLowerLogsState extends State<TempTodayLowerLogs> {
 
   String get timeLimit {
     final DateTime now = DateTime.now();
-    limit = now.subtract(const Duration(days: 5));
+    limit = now.subtract(const Duration(days: 1));
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     String formattedTime = formatter.format(limit);
 
@@ -111,23 +111,35 @@ class _TempTodayLowerLogsState extends State<TempTodayLowerLogs> {
       log = FirebaseFirestore.instance
           .collection('temperature')
           .where('datestamp', isGreaterThan: timeLimit)
-          .orderBy('datestamp', descending: true)
-          .limit(24);
-      return StreamBuilederLower(log);
+          .orderBy('datestamp', descending: true);
+      return StreamBuilderLower(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     } else if (state == 'Higher Trashold') {
       log = FirebaseFirestore.instance
           .collection('temperature')
           .where('datestamp', isGreaterThan: timeLimit)
-          .orderBy('datestamp', descending: true)
-          .limit(24);
-      return StreamBuilederHigher(log);
+          .orderBy('datestamp', descending: true);
+      return StreamBuilderHigher(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     } else {
       log = FirebaseFirestore.instance
           .collection('temperature')
           .where('datestamp', isGreaterThan: timeLimit)
-          .orderBy('datestamp', descending: true)
-          .limit(24);
-      return StreamBuilederAll(log);
+          .orderBy('datestamp', descending: true);
+      return StreamBuilderAll(
+        log,
+        'temperature',
+        "assets/images/thermometer.png",
+        '°C',
+      );
     }
   }
 }

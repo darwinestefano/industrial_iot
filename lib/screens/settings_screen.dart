@@ -34,12 +34,13 @@ class SettingScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Text('darwinstefano12@hotmail.com',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white,
-              )),
-          SizedBox(height: 10),
+          Text(
+            'darwinstefano12@hotmail.com',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

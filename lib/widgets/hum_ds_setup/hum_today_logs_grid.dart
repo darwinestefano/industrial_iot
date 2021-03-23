@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:industrial_iot_app/widgets/streambuilder_all.dart';
 import 'package:industrial_iot_app/widgets/streambuilder_higher.dart';
+
 import 'package:industrial_iot_app/widgets/streambuilder_lower.dart';
 
 import 'package:intl/intl.dart';
 
-class TempMonthGridLogs extends StatefulWidget {
+class HumTodayLogs extends StatefulWidget {
   @override
-  _TempMonthGridLogsState createState() => _TempMonthGridLogsState();
+  _HumTodayLogsState createState() => _HumTodayLogsState();
 }
 
-class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
+class _HumTodayLogsState extends State<HumTodayLogs> {
   String valueChoose;
   String status = 'All';
   List listItem = ["All", "Lower Trashold", "Higher Trashold"];
-
+  var limit;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,7 +28,7 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
         Padding(
           padding: EdgeInsets.only(left: 15.00),
           child: Text(
-            'Past 30 days Records',
+            'Today Logs',
             style: TextStyle(
               color: Colors.grey[800],
               fontSize: 15.0,
@@ -95,12 +95,11 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
     );
   }
 
-  get timeLimit {
-    DateTime now = DateTime.now();
-    var limit = now.subtract(const Duration(days: 30));
-    DateFormat formatter = DateFormat('dd-MM-yyyy');
+  String get timeLimit {
+    final DateTime now = DateTime.now();
+    limit = now.subtract(const Duration(days: 1));
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     String formattedTime = formatter.format(limit);
-    print("date here: " + formattedTime);
 
     return formattedTime;
   }
@@ -109,40 +108,37 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
     Query log;
 
     if (state == 'Lower Trashold') {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderLower(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else if (state == 'Higher Trashold') {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderHigher(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
+          .collection('humidity')
           .where('datestamp', isGreaterThan: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderAll(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     }
   }

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:industrial_iot_app/widgets/alert_dialog.dart';
 
-class StreamBuilederAll extends StatelessWidget {
+class StreamBuilderAll extends StatelessWidget {
   final Query log;
-
-  const StreamBuilederAll(this.log);
+  final String device;
+  final String path;
+  final String symbol;
+  const StreamBuilderAll(this.log, this.device, this.path, this.symbol);
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,9 @@ class StreamBuilederAll extends StatelessWidget {
           return new ListView(
             children: snapshot.data.docs.map(
               (DocumentSnapshot document) {
-                if (document.data()['temperature'] <= 20) {
+                if (document.data()[device] <= 20) {
                   return _listData(document, Colors.blue, context);
-                } else if (document.data()['temperature'] >= 35) {
+                } else if (document.data()[device] >= 35) {
                   return _listData(document, Colors.red, context);
                 } else {
                   return _listData(document, Colors.grey, context);
@@ -73,13 +75,12 @@ class StreamBuilederAll extends StatelessWidget {
     MaterialColor colorText,
     BuildContext context,
   ) {
-    return document.data()['temperature'] <= 20 ||
-            document.data()['temperature'] >= 35
+    return document.data()[device] <= 20 || document.data()[device] >= 35
         ? new ListTile(
-            leading: Icon(
-              Icons.device_thermostat,
+            leading: Image.asset(
+              path,
               color: colorText,
-              size: 40,
+              height: 37,
             ),
             title: new Text(
               '${document.data()['datestamp']} ${document.data()['timestamp']}',
@@ -90,7 +91,7 @@ class StreamBuilederAll extends StatelessWidget {
               ),
             ),
             subtitle: new Text(
-              '${document.data()['temperature']} °C',
+              '${document.data()[device]} ' + symbol,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20.0,
@@ -98,15 +99,21 @@ class StreamBuilederAll extends StatelessWidget {
               ),
             ),
             trailing: IconButton(
-              icon: Icon(Icons.error_outline),
+              icon: Image.asset(
+                "assets/images/alert.png",
+                color: colorText,
+                height: 30,
+              ),
               color: colorText,
               onPressed: () {
-                if (document.data()['temperature'] <= 20) {
+                if (document.data()[device] <= 20) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return CustomAlertDialog(
-                            'The Temperature is below the minimum threshold possible. \n Immediate Action Needed!',
+                            'The ' +
+                                device +
+                                ' is below the minimum threshold possible. \n Immediate Action Needed!',
                             Colors.blueAccent);
                       });
                 } else {
@@ -114,7 +121,9 @@ class StreamBuilederAll extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return CustomAlertDialog(
-                            'The Temperature is above the maximum threshold possible. \n Immediate Action Needed!',
+                            'The ' +
+                                device +
+                                ' is above the maximum threshold possible. \n Immediate Action Needed!',
                             Colors.redAccent);
                       });
                 }
@@ -122,10 +131,10 @@ class StreamBuilederAll extends StatelessWidget {
             ),
           )
         : new ListTile(
-            leading: Icon(
-              Icons.device_thermostat,
+            leading: Image.asset(
+              path,
               color: colorText,
-              size: 40,
+              height: 37,
             ),
             title: new Text(
               '${document.data()['datestamp']} ${document.data()['timestamp']}',
@@ -136,7 +145,7 @@ class StreamBuilederAll extends StatelessWidget {
               ),
             ),
             subtitle: new Text(
-              '${document.data()['temperature']} °C',
+              '${document.data()[device]} ' + symbol,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20.0,

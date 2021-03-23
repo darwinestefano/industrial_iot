@@ -7,15 +7,16 @@ import 'package:industrial_iot_app/widgets/streambuilder_lower.dart';
 
 import 'package:intl/intl.dart';
 
-class TempMonthGridLogs extends StatefulWidget {
+class HumWeekGridLogs extends StatefulWidget {
   @override
-  _TempMonthGridLogsState createState() => _TempMonthGridLogsState();
+  _HumWeekGridLogsState createState() => _HumWeekGridLogsState();
 }
 
-class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
+class _HumWeekGridLogsState extends State<HumWeekGridLogs> {
   String valueChoose;
   String status = 'All';
   List listItem = ["All", "Lower Trashold", "Higher Trashold"];
+  var limit;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
         Padding(
           padding: EdgeInsets.only(left: 15.00),
           child: Text(
-            'Past 30 days Records',
+            'Past 7 days Records',
             style: TextStyle(
               color: Colors.grey[800],
               fontSize: 15.0,
@@ -78,10 +79,15 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
                     onTap: () {
                       if (valueItem == 'Lower Trashold') {
                         status = 'Lower Trashold';
+                        //print("Status on lower: " + status);
                       } else if (valueItem == 'Higher Trashold') {
                         status = 'Higher Trashold';
+
+                        //print("Status on higher: " + status);
                       } else {
                         status = 'All';
+
+                        //print("Status on all: " + status);
                       }
                     },
                   );
@@ -95,13 +101,12 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
     );
   }
 
-  get timeLimit {
-    DateTime now = DateTime.now();
-    var limit = now.subtract(const Duration(days: 30));
-    DateFormat formatter = DateFormat('dd-MM-yyyy');
+  String get timeLimit {
+    final DateTime now = DateTime.now();
+    limit = now.subtract(const Duration(days: 7));
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     String formattedTime = formatter.format(limit);
-    print("date here: " + formattedTime);
-
+    print(formattedTime);
     return formattedTime;
   }
 
@@ -109,40 +114,37 @@ class _TempMonthGridLogsState extends State<TempMonthGridLogs> {
     Query log;
 
     if (state == 'Lower Trashold') {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
-          .where('datestamp', isGreaterThan: timeLimit)
+          .collection('humidity')
+          .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderLower(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else if (state == 'Higher Trashold') {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
-          .where('datestamp', isGreaterThan: timeLimit)
+          .collection('humidity')
+          .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderHigher(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     } else {
-      print("time" + timeLimit);
       log = FirebaseFirestore.instance
-          .collection('temperature')
-          .where('datestamp', isGreaterThan: timeLimit)
+          .collection('humidity')
+          .where('datestamp', isGreaterThanOrEqualTo: timeLimit)
           .orderBy('datestamp', descending: true);
       return StreamBuilderAll(
         log,
-        'temperature',
-        "assets/images/thermometer.png",
-        '°C',
+        'humidity',
+        "assets/images/humidity.png",
+        '%',
       );
     }
   }

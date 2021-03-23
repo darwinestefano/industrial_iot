@@ -17,8 +17,19 @@ class ProfileListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 65,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 6,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
       margin: EdgeInsets.symmetric(
-        horizontal: 10,
+        horizontal: 8,
         vertical: 5,
       ),
       padding: EdgeInsets.symmetric(
@@ -26,7 +37,7 @@ class ProfileListItem extends StatelessWidget {
       ),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 0.98,
         color: Colors.white,

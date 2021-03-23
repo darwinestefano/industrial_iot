@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:industrial_iot_app/widgets/alert_dialog.dart';
 
-class TempEnvRTLogsGrid extends StatefulWidget {
+class HumEnvRTLogsGrid extends StatefulWidget {
   @override
-  _TempEnvRTLogsGridState createState() => _TempEnvRTLogsGridState();
+  _HumEnvRTLogsGridState createState() => _HumEnvRTLogsGridState();
 }
 
-class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
+class _HumEnvRTLogsGridState extends State<HumEnvRTLogsGrid> {
   @override
   Widget build(BuildContext context) {
     Query tempLogs = FirebaseFirestore.instance
-        .collection('temperature')
+        .collection('humidity')
         .orderBy('datestamp', descending: true)
         .orderBy('timestamp', descending: true)
         .limit(5);
@@ -69,7 +69,7 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
 
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Text(
-                  "Loading",
+                  "Please wait unitl the data has been processed...",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -80,9 +80,9 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
               return new ListView(
                 children: snapshot.data.docs.map(
                   (DocumentSnapshot document) {
-                    if (document.data()['temperature'] <= 20) {
+                    if (document.data()['humidity'] <= 20) {
                       return _listData(document, Colors.blue);
-                    } else if (document.data()['temperature'] >= 35) {
+                    } else if (document.data()['humidity'] >= 35) {
                       return _listData(document, Colors.red);
                     } else {
                       return _listData(document, Colors.grey);
@@ -101,11 +101,11 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
     DocumentSnapshot document,
     MaterialColor colorText,
   ) {
-    return document.data()['temperature'] <= 20 ||
-            document.data()['temperature'] >= 35
+    return document.data()['humidity'] <= 20 ||
+            document.data()['humidity'] >= 35
         ? new ListTile(
             leading: Image.asset(
-              "assets/images/thermometer.png",
+              "assets/images/humidity.png",
               color: colorText,
               height: 37,
             ),
@@ -118,7 +118,7 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
               ),
             ),
             subtitle: new Text(
-              '${document.data()['temperature']} °C',
+              '${document.data()['humidity']} °C',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20.0,
@@ -133,12 +133,12 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
               ),
               color: colorText,
               onPressed: () {
-                if (document.data()['temperature'] <= 20) {
+                if (document.data()['humidity'] <= 20) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return CustomAlertDialog(
-                            'The Temperature is below the minimum threshold possible. \n Immediate Action Needed!',
+                            'The Humidity is below the minimum threshold possible. \n Immediate Action Needed!',
                             Colors.blueAccent);
                       });
                 } else {
@@ -146,7 +146,7 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
                       context: context,
                       builder: (BuildContext context) {
                         return CustomAlertDialog(
-                            'The Temperature is above the maximum threshold possible. \n Immediate Action Needed!',
+                            'The Humidity is above the maximum threshold possible. \n Immediate Action Needed!',
                             Colors.redAccent);
                       });
                 }
@@ -155,7 +155,7 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
           )
         : new ListTile(
             leading: Image.asset(
-              "assets/images/thermometer.png",
+              "assets/images/humidity.png",
               color: colorText,
               height: 37,
             ),
@@ -168,7 +168,7 @@ class _TempEnvRTLogsGridState extends State<TempEnvRTLogsGrid> {
               ),
             ),
             subtitle: new Text(
-              '${document.data()['temperature']} °C',
+              '${document.data()['humidity']} °C',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20.0,
