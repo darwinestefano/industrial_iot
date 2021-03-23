@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:industrial_iot_app/widgets/custom_app_bar.dart';
-import 'package:industrial_iot_app/widgets/dust_chart/dust_envRT_chart.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_chart/dust_envRT_chart.dart';
 import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_controller.dart';
 import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_logs_grid.dart';
 import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_envRT_stats_grid.dart';

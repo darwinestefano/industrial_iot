@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:industrial_iot_app/widgets/dust_chart/dust_env_chart.dart';
+import 'package:industrial_iot_app/widgets/dust_rt_setup/dust_chart/dust_env_chart.dart';
 
 class DustController extends StatefulWidget {
   @override
